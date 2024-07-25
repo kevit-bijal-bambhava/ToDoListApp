@@ -1,0 +1,16 @@
+﻿@model Entities.TaskItem
+
+@{
+    ViewData["Title"] = "Delete Task";
+}
+
+<h2>Delete Task</h2>
+
+<h3>Alert!! Are you sure you want to delete the Task?</h3>
+
+    <form asp-controller="Tasks" asp-action="Delete" method="post">
+        <input type="hidden" asp-for="TaskId" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+

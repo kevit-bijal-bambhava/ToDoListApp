@@ -1,0 +1,25 @@
+﻿@model Entities.TaskItem
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<h2>Create Task</h2>
+
+<form asp-controller="Tasks" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label">Title: </label>
+        <input asp-for="Title" class="form-control" placeholder="Title of the Task.." />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div><br />
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">Description: </label>
+        <textarea asp-for="Description" class="form-control" placeholder="Add Description"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div><br />
+
+    <div class="form-group">
+        <button type="submit" value="Submit" class="btn btn-primary">Create</button>
+    </div>
+</form>

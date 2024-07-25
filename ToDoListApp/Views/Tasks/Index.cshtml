@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Entities.TaskItem>
+
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+
+
+<p>
+    <a href="@Url.Action("Create")" class="btn btn-primary">Create New Task</a>
+    <a asp-action="ExportToCsv" class="btn-info">Dowload CSV</a>
+</p>
+
+<h2>All Your Tasks</h2>
+
+<table class="table" style="width:100%">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Finished</th>
+            <th>Created Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td width="200px" class="@(task.IsCompleted ? "completed-task" : "")">@task.Title</td>
+                <td width="500px" class="@(task.IsCompleted ? "completed-task" : "")">@task.Description</td>
+                <td>@task.IsCompleted</td>
+                <td width="300px">@task.CreatedDate</td>
+                <td width="500px">
+                    <a href="@Url.Action("Edit", new { id = task.TaskId })" class="btn btn-warning">Edit</a>
+                    <a href="@Url.Action("Details", new { id = task.TaskId })" class="btn btn-info">Details</a>
+                    <a href="@Url.Action("Delete", new { id = task.TaskId })" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

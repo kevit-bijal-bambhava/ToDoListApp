@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ToDoListApp</title>
+    <link rel="stylesheet" href="~/StyleSheet.css" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                <img src="~/ToDo_Logo.png" alt="Logo" width="100px" height="100px"/>
+                <a class="navbar-brand" href="/">ToDoList WebApp</a>
+            </nav>
+        </header>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
