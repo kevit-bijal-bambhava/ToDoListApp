@@ -9,16 +9,19 @@ using CsvHelper.Configuration;
 using System.Text;
 using ServiceContracts;
 using Entities;
+using Microsoft.Extensions.Logging;
 
 namespace Services
 {
     public class TaskService : ITaskService
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<TaskService> _logger;
 
-        public TaskService(AppDbContext context)
+        public TaskService(AppDbContext context, ILogger<TaskService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<TaskItem>> GetAllTasksAsync()

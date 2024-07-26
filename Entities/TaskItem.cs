@@ -19,5 +19,10 @@ namespace Entities
         public bool IsCompleted { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+
+        public override string ToString()
+        {
+            return $"TaskID = {TaskId}, Title = {Title}, Description = {Description}, IsCompleted = {IsCompleted}, CreatedDate = {CreatedDate}";
+        }
     }
 }
