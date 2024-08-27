@@ -42,7 +42,11 @@ namespace Services
 
         public async Task UpdateTaskAsync(TaskItem task)
         {
-            await _context.UpdateTask_Sp(task); 
+            // Attach the task to the context and mark it as modified
+            _context.Tasks.Attach(task);
+            _context.Entry(task).State = EntityState.Modified;
+
+            // Save the changes to the database
             await _context.SaveChangesAsync();
         }
 
