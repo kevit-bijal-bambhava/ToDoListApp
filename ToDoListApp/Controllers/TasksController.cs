@@ -1,26 +1,21 @@
-﻿using CsvHelper.Configuration;
-using CsvHelper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CsvHelper;
 using Entities;
-using ServiceContracts;
-using Services;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SerilogTimings;
+using ServiceContracts;
+using System.Globalization;
 
 namespace ToDoListApp.Controllers
 {
     public class TasksController : Controller
     {
-        private readonly ITaskService _taskRepository;
+        private readonly ITaskService _taskService;
         private readonly ILogger<TasksController> _logger;
         private readonly IDiagnosticContext _diagnosticContext;
-        public TasksController(ITaskService taskRepository, ILogger<TasksController> logger, IDiagnosticContext diagnosticContext)
+        public TasksController(ITaskService taskService, ILogger<TasksController> logger, IDiagnosticContext diagnosticContext)
         {
-            _taskRepository = taskRepository;
+            _taskService = taskService;
             _logger = logger;
             _diagnosticContext = diagnosticContext;
         }
@@ -32,7 +27,7 @@ namespace ToDoListApp.Controllers
             dynamic tasks;
             using(Operation.Time("Total time taken to fetch all tasks: "))
             {
-                tasks = await _taskRepository.GetAllTasksAsync();
+                tasks = await _taskService.GetAllTasksAsync();
                 _diagnosticContext.Set("Tasks", tasks);
                 return View(tasks);
             };
@@ -41,7 +36,7 @@ namespace ToDoListApp.Controllers
         public async Task<IActionResult> Details(int id)
         {
             _logger.LogInformation("Details method called");
-            var task = await _taskRepository.GetTaskByIdAsync(id);
+            var task = await _taskService.GetTaskByIdAsync(id);
             if (task == null)
             {
                 return NotFound();
@@ -60,7 +55,7 @@ namespace ToDoListApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _taskRepository.AddTaskAsync(task);
+                await _taskService.AddTaskAsync(task);
                 _logger.LogInformation("New Task has been created..");
                 return RedirectToAction(nameof(Index));
             }
@@ -69,7 +64,7 @@ namespace ToDoListApp.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var task = await _taskRepository.GetTaskByIdAsync(id);
+            var task = await _taskService.GetTaskByIdAsync(id);
             if (task == null)
             {
                 return NotFound();
@@ -83,7 +78,7 @@ namespace ToDoListApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _taskRepository.UpdateTaskAsync(task);
+                await _taskService.UpdateTaskAsync(task);
                 _logger.LogInformation("Task is edited.");
                 return RedirectToAction(nameof(Index));
             }
@@ -92,7 +87,7 @@ namespace ToDoListApp.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var task = await _taskRepository.GetTaskByIdAsync(id);
+            var task = await _taskService.GetTaskByIdAsync(id);
             if (task == null)
             {
                 return NotFound();
@@ -104,14 +99,14 @@ namespace ToDoListApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _taskRepository.DeleteTaskAsync(id);
+            await _taskService.DeleteTaskAsync(id);
             _logger.LogInformation("Task is Deleted.");
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> ExportToCsv()
         {
-            var tasks = await _taskRepository.GetAllTasksAsync();
+            var tasks = await _taskService.GetAllTasksAsync();
 
             using (var memoryStream = new MemoryStream())
             using (var writer = new StreamWriter(memoryStream))
