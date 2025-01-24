@@ -1,15 +1,10 @@
-﻿using CsvHelper.Configuration;
-using CsvHelper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CsvHelper;
 using Entities;
-using ServiceContracts;
-using Services;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using SerilogTimings;
+using ServiceContracts;
+using System.Globalization;
 
 namespace ToDoListApp.Controllers
 {
@@ -122,6 +117,9 @@ namespace ToDoListApp.Controllers
                 return File(memoryStream.ToArray(), "text/csv", "MyTasks.csv");
             }
         }
+
+       
+
     }
 }
 
